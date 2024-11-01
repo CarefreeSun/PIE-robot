@@ -43,7 +43,7 @@ logging_steps: 5
 lr_scheduler_type: cosine
 max_seq_length: 2048
 max_steps: 200000
-output_dir: /mnt/data-rundong/VLA-experiments/1025-FTpizza-crop-woVision-wotext-width07-vq-4ldec-dropout01-1023-step20000-continue0812-step24000/
+output_dir: /mnt/data-rundong/VLA-experiments/1101-FTpizza-crop-woVision-wotext-width07-vq-4ldec-dropout01-1023-step20000-continue0812-step24000/
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 4
