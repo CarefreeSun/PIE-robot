@@ -71,10 +71,16 @@ def main():
     transformers.utils.logging.enable_default_handler()
     transformers.utils.logging.enable_explicit_format()
 
+    training_torch_type = ''
+    if training_args.fp16:
+        training_torch_type = 'fp16'
+    elif training_args.bf16:
+        training_torch_type = 'bf16'
+
     # Log on each process a small summary
     logger.warning(
         f"Process rank: {training_args.local_rank}, device: {training_args.device}, n_gpu: {training_args.n_gpu}"
-        + f" distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_args.fp16}"
+        + f" distributed training: {bool(training_args.local_rank != -1)}, 16-bits training: {training_torch_type}"
     )
     logger.info(f"Model parameters {model_args}")
     logger.info(f"Data parameters {data_args}")
@@ -159,8 +165,8 @@ def main():
     # Load pretrained model
     #######################
     logger.info("*** Load pretrained model ***")
-    # use float16 (V100 does not support bfloat16)
-    torch_dtype = torch.float16 if training_args.fp16 else torch.float32
+    # torch type (V100 does not support bfloat16)
+    torch_dtype = torch.float16 if training_args.fp16 else torch.bfloat16
 
     model_kwargs = dict(
         # revision=model_args.model_revision,
