@@ -7,14 +7,14 @@ disable_auto_config: true
 model_type: mistral
 va_ncodes: 16384
 va_embedding_dim: 256
-va_checkpoint: /mnt/data-rundong/VQ3D-vision-action/1028-ftpizza-crop-klreg1-4ldec-dropout01/checkpoints/step_checkpoint-step_20000.ckpt
+va_checkpoint: /mnt/data-rundong/VQ3D-vision-action/1028-ftpizza-crop-klreg1-4ldec-dropout01/checkpoints/step_checkpoint-step_40000.ckpt
 v_mask_ratio: 0.0
 
 # Data training arguments
 preprocessing_num_workers: 12
 # data_root: /mnt/data-rundong/robot_datasets/0531-action111-bridge-noMask-woResidual_tokenized_stacked/
 data_roots:
-  - /mnt/data-rundong/robot_datasets/1028-ftpizza-crop-klreg1-4ldec-dropout01_step20000_tokenized_stacked/pizza_width/
+  - /mnt/data-rundong/robot_datasets/1028-ftpizza-crop-klreg1-4ldec-dropout01_step40000_tokenized_stacked/pizza_width/
   # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/bridge2/
   # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/rt1/
 padding_side: left
@@ -31,7 +31,7 @@ bf16: false
 fp16: true
 do_eval: true
 eval_strategy: steps
-eval_steps: 1000
+eval_steps: 2000
 gradient_accumulation_steps: 1
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
@@ -42,7 +42,7 @@ logging_steps: 5
 lr_scheduler_type: cosine
 max_seq_length: 2048
 max_steps: 50000
-output_dir: /mnt/data-rundong/VLA-experiments/1031-FTpizza-crop-woVision-width07-vq-4ldec-dropout01-1028-klreg1-step20000-continue0812-step24000/
+output_dir: /mnt/data-rundong/VLA-experiments/1101-FTpizza-crop-woVision-width07-vq-4ldec-dropout01-1028-klreg1-step40000-continue0812-step24000/
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 4
@@ -50,7 +50,7 @@ remove_unused_columns: true
 report_to:
 - tensorboard
 save_strategy: steps
-save_steps: 1000
+save_steps: 2000
 save_total_limit: 40
 load_best_model_at_end: true
 seed: 42
