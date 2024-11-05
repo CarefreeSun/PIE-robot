@@ -208,17 +208,7 @@ def main():
         model = load_safetensors_weights(model, llm_checkpoint_path)
             
     # model.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=128) # pad to multiple of 128 to improve performance
-    
-    # freeze some layers
-    for name, param in model.named_parameters():
-        print(f"Parameter name: {name}, requires_grad: {param.requires_grad}")
-        if 'layers' in name:
-            name_split = name.split('.')
-            layer_id = int(name_split[2])
-            if layer_id <= 27:
-                param.requires_grad = False
-    for name, param in model.named_parameters():
-        print(f"Parameter name: {name}, requires_grad: {param.requires_grad}")
+
     ########################
     # Initialize the Trainer
     ########################
@@ -227,12 +217,6 @@ def main():
         def on_evaluation(self, args: transformers.TrainingArguments, state: transformers.TrainerState, control: transformers.TrainerControl, **kwargs):
             # print whether this process should save the checkpoint
             print(f'Process {args.local_rank} should save checkpoint: {args.should_save}')
-    class PrintRequiresGradCallback(transformers.TrainerCallback):
-        def on_epoch_end(self, args, state, control, model=None, tokenizer=None, **kwargs):
-            # 打印所有参数的 requires_grad 状态
-            print(f"\nEpoch {state.epoch} --- Checking requires_grad status:")
-            for name, param in model.named_parameters():
-                print(f"Parameter name: {name}, requires_grad: {param.requires_grad}")
 
     trainer = SFTTrainer(
         model=model,
@@ -242,7 +226,7 @@ def main():
         tokenizer=tokenizer,
         dataset_text_field="text",
         data_collator=data_collator,
-        callbacks=[PrintRequiresGradCallback()],
+        callbacks=[PrintCallback()] if training_args.debug else None,
         max_seq_length=training_args.max_seq_length,
         dataset_num_proc=data_args.preprocessing_num_workers,
         dataset_kwargs=training_args.dataset_kwargs,
