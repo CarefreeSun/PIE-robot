@@ -42,7 +42,7 @@ logging_steps: 5
 lr_scheduler_type: cosine
 max_seq_length: 2048
 max_steps: 20000
-output_dir: /mnt/data-rundong/VLA-experiments/1105-FTpizza-crop-woVision-freezestarttolayer27-vq-1028-klreg1-step40000-continue1101-klreg1-step2000/
+output_dir: /mnt/data-rundong/VLA-experiments/1105-FTpizza-crop-woVision-freezestarttolayer29-vq-1028-klreg1-step40000-continue1101-klreg1-step2000/
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 4
