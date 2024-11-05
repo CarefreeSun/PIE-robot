@@ -31,7 +31,7 @@ bf16: false
 fp16: true
 do_eval: true
 eval_strategy: steps
-eval_steps: 2000
+eval_steps: 500
 gradient_accumulation_steps: 1
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
@@ -41,7 +41,7 @@ logging_strategy: steps
 logging_steps: 5  
 lr_scheduler_type: cosine
 max_seq_length: 2048
-max_steps: 50000
+max_steps: 20000
 output_dir: /mnt/data-rundong/VLA-experiments/1105-FTpizza-crop-woVision-freezestarttolayer27-vq-1028-klreg1-step40000-continue1101-klreg1-step2000/
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
