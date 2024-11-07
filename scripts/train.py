@@ -217,7 +217,7 @@ def main():
         elif 'layers' in name:
             name_split = name.split('.')
             layer_id = int(name_split[2])
-            if layer_id <= 29:
+            if layer_id <= 30:
                 param.requires_grad = False
     for name, param in model.named_parameters():
         print(f"Parameter name: {name}, requires_grad: {param.requires_grad}")
