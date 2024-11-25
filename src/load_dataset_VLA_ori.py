@@ -57,8 +57,10 @@ def VLA_dataset_generator(shards, eos_token, static_video_description, return_in
                         text_output = '<botp_o>' + instance_data['output_clip_description'] + '<eotp_o>'
                     else: 
                         if wo_text:
-                            text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>'
-                            text_output = ''
+                            text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>' + \
+                                    '<bots_i>' + '<eots_i>' + \
+                                    '<botp_i>' + '<eotp_i>'
+                            text_output = '<botp_o>' + '<eotp_o>'
                         else:
                             if instance_data['input_clip_description'] == '': # sample a description for the input clip
                                 instance_data['input_clip_description'] = random.choice(static_video_description)
@@ -75,10 +77,23 @@ def VLA_dataset_generator(shards, eos_token, static_video_description, return_in
                             if len(text_output) > 800:
                                 text_output = '<botp_o>' + '' + '<eotp_o>'
                         
-                        # text_input += '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + \
-                        #             '<boa_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_action_tokens']]) + '<eoa_i>'
-                        text_input += '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + '<boa_i>' + '<eoa_i>'
-                        text_output += '<boa_o>' + ''.join([f'<va{str(x)}>' for x in instance_data['output_action_tokens']]) + '<eoa_o>'
+                        text_input += '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + \
+                                    '<boa_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_action_tokens']]) + '<eoa_i>'
+                                    
+                        if action_before_vision:
+                            # text_input += '<boa_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_action_tokens']]) + '<eoa_i>' + \
+                            #         '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>'
+                            text_output += '<boa_o>' + ''.join([f'<va{str(x)}>' for x in instance_data['output_action_tokens']]) + '<eoa_o>'
+                            if not wo_vision:
+                                text_output += '<bov_o>' + ''.join([f'<va{str(x)}>' for x in instance_data['output_video_tokens']]) + '<eov_o>'
+                        else:
+                            # for testing memory capacity, double the tokens
+                            # text_input += '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) * 2 + '<eov_i>' + \
+                            #         '<boa_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_action_tokens']]) + '<eoa_i>'
+                            if not wo_vision:
+                                text_output += '<bov_o>' + ''.join([f'<va{str(x)}>' for x in instance_data['output_video_tokens']]) + '<eov_o>'
+                                # text_output += '<bov_o>' + ''.join([f'<va{str(x)}>' for x in instance_data['output_video_tokens']]) * 2 + '<eov_o>'
+                            text_output += '<boa_o>' + ''.join([f'<va{str(x)}>' for x in instance_data['output_action_tokens']]) + '<eoa_o>'
                     text_output += eos_token
                 except:
                     continue
