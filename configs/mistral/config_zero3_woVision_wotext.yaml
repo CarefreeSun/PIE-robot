@@ -43,7 +43,7 @@ logging_steps: 5
 lr_scheduler_type: cosine
 max_seq_length: 1024
 max_steps: 50000
-output_dir: /mnt/data-rundong/VLA-experiments/1128-split-freezeSto29-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000-continue1126-step16000/
+output_dir: /mnt/data-rundong/VLA-experiments/1128-split-freezeSto29-bs4-4node-8v100-woVision-wotext-vq-1122-kl-step30000-continue1126-step16000/
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 4
