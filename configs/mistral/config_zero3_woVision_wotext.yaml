@@ -43,7 +43,7 @@ logging_steps: 5
 lr_scheduler_type: cosine
 max_seq_length: 1024
 max_steps: 50000
-output_dir: /mnt/data-rundong/VLA-experiments/1128-split-freezeSto29-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000-continue1126-step16000/
+output_dir: /mnt/data-rundong/VLA-experiments/1128-split-freezeSto29-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000-continue1127-step2000/
 overwrite_output_dir: true
 per_device_eval_batch_size: 4
 per_device_train_batch_size: 4
@@ -58,4 +58,4 @@ seed: 42
 warmup_ratio: 0.01
 save_on_each_node: false
 # resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/0812-tokenize0722-step_95000-bridgeRT-VisionFirst-vaFeat-noMask-mistral-piece2of2/checkpoint-24000/
-resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/1126-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000/checkpoint-16000/
+resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/1127-split-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000/checkpoint-2000/
