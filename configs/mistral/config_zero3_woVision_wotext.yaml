@@ -58,4 +58,4 @@ seed: 42
 warmup_ratio: 0.01
 save_on_each_node: false
 # resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/0812-tokenize0722-step_95000-bridgeRT-VisionFirst-vaFeat-noMask-mistral-piece2of2/checkpoint-24000/
-resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/VLA-experiments/1126-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000/checkpoint-16000/
+resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/1126-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000/checkpoint-16000/
