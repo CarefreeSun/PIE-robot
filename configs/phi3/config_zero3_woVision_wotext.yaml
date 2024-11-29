@@ -4,7 +4,7 @@ model_revision: main
 torch_dtype: float16
 use_flash_attention_2: false
 disable_auto_config: true
-model_type: mistral
+model_type: phi3
 va_ncodes: 16384
 va_embedding_dim: 256
 va_checkpoint: /mnt/data-rundong/RobotVQ/1122-pizza-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kl/checkpoints/step_checkpoint-step_30000.ckpt
