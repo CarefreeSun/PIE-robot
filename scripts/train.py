@@ -154,10 +154,11 @@ def main():
     
     # input commonly ends by <eoa_i>, use <eoa_i> as the response template
     # when only text, input ends by <eotp_i>
-    if data_args.only_text:
-        response_template_id = tokenizer.convert_tokens_to_ids(['<eotp_i>'])
-    else:
-        response_template_id = tokenizer.convert_tokens_to_ids(['<eoa_i>'])
+    # if data_args.only_text:
+    #     response_template_id = tokenizer.convert_tokens_to_ids(['<eotp_i>'])
+    # else:
+    #     response_template_id = tokenizer.convert_tokens_to_ids(['<eoa_i>'])
+    response_template_id = tokenizer.convert_tokens_to_ids(['Answer'])
 
     data_collator = DataCollatorForCompletionOnlyLM(response_template_id, tokenizer=tokenizer)
 
