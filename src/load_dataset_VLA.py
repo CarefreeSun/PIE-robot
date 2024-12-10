@@ -49,10 +49,10 @@ def VLA_dataset_generator(shards, eos_token, static_video_description, return_in
                     instance_data = json.loads(line)
 
                     text_input = '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + '<boa_i><va0><eoa_i>'
-                    text_input += 'What should the robot arm do to ' + instance_data['task_description'] + " ? Answer"
-
-                    text_output = ": "
-                    text_output += '<boa_o>' + ''.join([f'<va{str(x)}>' for x in instance_data['output_action_tokens']]) + '<eoa_o>'
+                    text_input += 'What should the robot arm do to ' + instance_data['task_description'] 
+                    text_input += "? Answer: <boa_o>"
+                    
+                    text_output = ''.join([f'<va{str(x)}>' for x in instance_data['output_action_tokens']]) + '<eoa_o>'
 
                         
                     # if only_text: # For debugging: check if can train the language model correctly
