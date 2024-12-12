@@ -48,44 +48,45 @@ def VLA_dataset_generator(shards, eos_token, static_video_description, return_in
                 try:
                     instance_data = json.loads(line)
 
-                    text_input = '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + '<boa_i><va0><eoa_i>'
-                    text_input += 'What should the robot arm do to ' + instance_data['task_description'] 
-                    text_input += "? Answer: <boa_o>"
-                    
-                    text_output = ''.join([f'<va{str(x)}>' for x in instance_data['output_action_tokens']]) + '<eoa_o>'
+                    # text_input = '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + '<boa_i><va0><eoa_i>'
+                    # text_input += 'What should the robot arm do to ' + instance_data['task_description'] 
+                    # text_input += "? Answer: <boa_o>"
+
+                    # text_output = ''.join([f'<va{str(x)}>' for x in instance_data['output_action_tokens']]) + '<eoa_o>'
 
                         
-                    # if only_text: # For debugging: check if can train the language model correctly
-                    #     if instance_data['input_clip_description'] == '': # sample a description for the input clip
-                    #         instance_data['input_clip_description'] = random.choice(static_video_description)
-                    #     text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>' + \
-                    #             '<bots_i>' + instance_data['scene_description'] + '<eots_i>' + \
-                    #             '<botp_i>' + instance_data['input_clip_description'] + '<eotp_i>'
-                    #     text_output = '<botp_o>' + instance_data['output_clip_description'] + '<eotp_o>'
-                    # else: 
-                    #     if wo_text:
-                    #         text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>'
-                    #         text_output = ''
-                    #     else:
-                    #         if instance_data['input_clip_description'] == '': # sample a description for the input clip
-                    #             instance_data['input_clip_description'] = random.choice(static_video_description)
-                    #         text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>' + \
-                    #                 '<bots_i>' + instance_data['scene_description'] + '<eots_i>' + \
-                    #                 '<botp_i>' + instance_data['input_clip_description'] + '<eotp_i>'
-                    #         text_output = '<botp_o>' + instance_data['output_clip_description'] + '<eotp_o>'
-                    #         # if len(text_input) > 900 or len(text_output) > 800:
-                    #         #     continue
-                    #         if len(text_input) > 900:
-                    #             text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>' + \
-                    #                 '<bots_i>' + instance_data['scene_description'] + '<eots_i>' + \
-                    #                 '<botp_i>' + '' + '<eotp_i>'
-                    #         if len(text_output) > 800:
-                    #             text_output = '<botp_o>' + '' + '<eotp_o>'
+                    if only_text: # For debugging: check if can train the language model correctly
+                        if instance_data['input_clip_description'] == '': # sample a description for the input clip
+                            instance_data['input_clip_description'] = random.choice(static_video_description)
+                        text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>' + \
+                                '<bots_i>' + instance_data['scene_description'] + '<eots_i>' + \
+                                '<botp_i>' + instance_data['input_clip_description'] + '<eotp_i>'
+                        text_output = '<botp_o>' + instance_data['output_clip_description'] + '<eotp_o>'
+                    else: 
+                        assert wo_text
+                        if wo_text:
+                            text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>'
+                            text_output = ''
+                        else:
+                            if instance_data['input_clip_description'] == '': # sample a description for the input clip
+                                instance_data['input_clip_description'] = random.choice(static_video_description)
+                            text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>' + \
+                                    '<bots_i>' + instance_data['scene_description'] + '<eots_i>' + \
+                                    '<botp_i>' + instance_data['input_clip_description'] + '<eotp_i>'
+                            text_output = '<botp_o>' + instance_data['output_clip_description'] + '<eotp_o>'
+                            # if len(text_input) > 900 or len(text_output) > 800:
+                            #     continue
+                            if len(text_input) > 900:
+                                text_input = '<bott_i>' + instance_data['task_description'] + '<eott_i>' + \
+                                    '<bots_i>' + instance_data['scene_description'] + '<eots_i>' + \
+                                    '<botp_i>' + '' + '<eotp_i>'
+                            if len(text_output) > 800:
+                                text_output = '<botp_o>' + '' + '<eotp_o>'
                         
-                    #     # text_input += '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + \
-                    #     #             '<boa_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_action_tokens']]) + '<eoa_i>'
-                    #     text_input += '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + '<boa_i><va0><eoa_i>'
-                    #     text_output += '<boa_o>' + ''.join([f'<va{str(x)}>' for x in instance_data['output_action_tokens']]) + '<eoa_o>'
+                        # text_input += '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + \
+                        #             '<boa_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_action_tokens']]) + '<eoa_i>'
+                        text_input += '<bov_i>' + ''.join([f'<va{str(x)}>' for x in instance_data['input_video_tokens']]) + '<eov_i>' + '<boa_i><va0><eoa_i>'
+                        text_output += '<boa_o>' + ''.join([f'<va{str(x)}>' for x in instance_data['output_action_tokens']]) + '<eoa_o>'
                     text_output += eos_token
                 except:
                     continue
