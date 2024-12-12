@@ -6,8 +6,8 @@ use_flash_attention_2: false
 disable_auto_config: true
 model_type: phi3
 va_ncodes: 16384
-va_embedding_dim: 512
-va_checkpoint: /mnt/data-rundong/RobotVQ/1203-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim512-imagenetnorm-split-gan-continue-1202-no_split_gan-step14000/checkpoints/step_checkpoint-step_50000.ckpt
+va_embedding_dim: 1024
+va_checkpoint: /mnt/mnt/data-rundong/RobotVQ/1210-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim1024-imagenetnorm-imagegan-ganfeatloss02/checkpoints/step_checkpoint-step_30000.ckpt
 v_mask_ratio: 0.0
 
 # Data training arguments
@@ -43,7 +43,7 @@ logging_steps: 5
 lr_scheduler_type: cosine
 max_seq_length: 1024
 max_steps: 50000
-output_dir: /mnt/data-rundong/VLA-experiments/1206-phi3-split-bs8-4node-8v100-woVision-wotext-vq-1203-step50000/
+output_dir: /mnt/data-rundong/VLA-experiments/1212-phi3-split-bs8-4node-8v100-woVision-wotext-vq-1210-step30000/
 overwrite_output_dir: true
 per_device_eval_batch_size: 8
 per_device_train_batch_size: 8
