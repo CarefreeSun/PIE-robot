@@ -43,10 +43,10 @@ logging_steps: 5
 lr_scheduler_type: cosine
 max_seq_length: 1024
 max_steps: 80000
-output_dir: /mnt/data-rundong/VLA-experiments/1216-phi3-split-bs16-2node-8a100-woVision-wotext-vq-1210-step20000/
+output_dir: /mnt/data-rundong/VLA-experiments/1217-phi3-split-bs8-4node-8v100-woVision-wotext-vq-1210-step20000/
 overwrite_output_dir: true
-per_device_eval_batch_size: 16
-per_device_train_batch_size: 16
+per_device_eval_batch_size: 8
+per_device_train_batch_size: 8
 remove_unused_columns: true
 report_to:
 - tensorboard
