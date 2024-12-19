@@ -6,15 +6,15 @@ use_flash_attention_2: false
 disable_auto_config: true
 model_type: mistral
 va_ncodes: 16384
-va_embedding_dim: 256
-va_checkpoint: /mnt/data-rundong/VQ3D-vision-action/1023-ftpizza-crop-4ldec-dropout01-bs128-open0close1-lr1e-6-width07-continue-0725-step95000/checkpoints/step_checkpoint-step_20000.ckpt
+va_embedding_dim: 1024
+va_checkpoint: /mnt/data-rundong/RobotVQ/1210-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim1024-imagenetnorm-imagegan-ganfeatloss02/checkpoints/step_checkpoint-step_30000.ckpt
 v_mask_ratio: 0.0
 
 # Data training arguments
 preprocessing_num_workers: 12
 # data_root: /mnt/data-rundong/robot_datasets/0531-action111-bridge-noMask-woResidual_tokenized_stacked/
 data_roots:
-  - /mnt/data-rundong/robot_datasets/1023-ftpizza-crop-4ldec-dropout01-bs128-open0close1-lr1e-6-width07-continue-0725-step95000_step20000_tokenized_stacked/pizza_width/
+  - /mnt/data-rundong/robot_datasets/1210-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim1024-imagenetnorm-imagegan-ganfeatloss02_step30000_tokenized_stacked_split/pizza_width/
   # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/bridge2/
   # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/rt1/
 padding_side: left
@@ -32,30 +32,30 @@ bf16: true
 fp16: false
 do_eval: true
 eval_strategy: steps
-eval_steps: 4000
+eval_steps: 2000
 gradient_accumulation_steps: 1
 gradient_checkpointing: true
 gradient_checkpointing_kwargs:
   use_reentrant: False
 log_level: info
 logging_strategy: steps
-logging_steps: 5  
+logging_steps: 10  
 lr_scheduler_type: cosine
-max_seq_length: 2048
+max_seq_length: 1024
 max_steps: 200000
-output_dir: /mnt/data-rundong/VLA-experiments/1101-FTpizza-crop-woVision-wotext-bs32-vq-4ldec-dropout01-1023-step20000-continue0812-step24000/
+output_dir: /mnt/data-rundong/VLA-experiments/1219-mistral-bs8-4node-8a100-woVision-wotext-vq-1210-step30000/
 overwrite_output_dir: true
-per_device_eval_batch_size: 4
-per_device_train_batch_size: 4
+per_device_eval_batch_size: 8
+per_device_train_batch_size: 8
 remove_unused_columns: true
 report_to:
 - tensorboard
 save_strategy: steps
-save_steps: 8000
+save_steps: 4000
 save_total_limit: 40
 load_best_model_at_end: true
 seed: 42
-warmup_ratio: 0.0
+warmup_ratio: 0.01
 save_on_each_node: false
-resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/0812-tokenize0722-step_95000-bridgeRT-VisionFirst-vaFeat-noMask-mistral-piece2of2/checkpoint-24000/
+# resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/0812-tokenize0722-step_95000-bridgeRT-VisionFirst-vaFeat-noMask-mistral-piece2of2/checkpoint-24000/
 # resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/1015-FTpizza-width07-vq-3ldec-1012-step8000-continue0812-step24000-visionFirst/checkpoint-7500/
