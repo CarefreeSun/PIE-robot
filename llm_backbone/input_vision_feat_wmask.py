@@ -8,8 +8,9 @@ import torch
 import torch.nn as nn
 from transformers import AutoModelForCausalLM, set_seed, MistralModel, PhiModel
 from transformers import TrainerCallback
-from transformers import Phi3Config, Phi3ForCausalLM, LlamaTokenizer, AutoTokenizer
+from transformers import Phi3Config, Phi3ForCausalLM, LlamaTokenizer, PhiForCausalLM
 from transformers import MistralConfig, MistralForCausalLM
+from transformers import LlamaForCausalLM
 from transformers import PreTrainedModel
 from .codebook import Codebook
 
@@ -127,3 +128,32 @@ class MistralInVisionActionFeatMask(MistralForCausalLM):
         model.set_input_embeddings(new_embed_tokens)
         return model
     
+class LlamaInVisionActionFeatMask(LlamaForCausalLM):
+    def __init__(self, config):
+        super().__init__(config)
+    
+    @classmethod
+    def from_pretrained(cls, pretrained_model_name_or_path, tokenizer, va_embed, v_mask_ratio, **kwargs):
+        # Call the parent class's from_pretrained method
+        model = super(LlamaInVisionActionFeatMask, cls).from_pretrained(pretrained_model_name_or_path, **kwargs)
+        model.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=128) # pad to multiple of 128 to improve performance
+        # rewrite self.model.embed_tokens with tokenizer and vision-action model
+        origin_embed_tokens = model.get_input_embeddings()
+        new_embed_tokens = TLAEmbeddingMask(origin_embed_tokens, tokenizer, va_embed, v_mask_ratio)
+        model.set_input_embeddings(new_embed_tokens)
+        return model
+    
+class PhiInVisionActionFeatMask(PhiForCausalLM):
+    def __init__(self, config):
+        super().__init__(config)
+    
+    @classmethod
+    def from_pretrained(cls, pretrained_model_name_or_path, tokenizer, va_embed, v_mask_ratio, **kwargs):
+        # Call the parent class's from_pretrained method
+        model = super(PhiInVisionActionFeatMask, cls).from_pretrained(pretrained_model_name_or_path, **kwargs)
+        model.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=128) # pad to multiple of 128 to improve performance
+        # rewrite self.model.embed_tokens with tokenizer and vision-action model
+        origin_embed_tokens = model.get_input_embeddings()
+        new_embed_tokens = TLAEmbeddingMask(origin_embed_tokens, tokenizer, va_embed, v_mask_ratio)
+        model.set_input_embeddings(new_embed_tokens)
+        return model

@@ -1,0 +1,61 @@
+# Model arguments
+model_name_or_path: /mnt/data-rundong/phi-1_5
+model_revision: main
+torch_dtype: float16
+use_flash_attention_2: false
+disable_auto_config: true
+model_type: phi1
+va_ncodes: 16384
+va_embedding_dim: 1024
+va_checkpoint: /mnt/data-rundong/RobotVQ/1210-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim1024-imagenetnorm-imagegan-ganfeatloss02/checkpoints/step_checkpoint-step_50000.ckpt
+v_mask_ratio: 0.0
+
+# Data training arguments
+preprocessing_num_workers: 12
+# data_root: /mnt/data-rundong/robot_datasets/0531-action111-bridge-noMask-woResidual_tokenized_stacked/
+data_roots:
+  - /mnt/data-rundong/robot_datasets/1210-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim1024-imagenetnorm-imagegan-ganfeatloss02_step50000_tokenized_stacked_split/pizza_width/
+  # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/bridge2/
+  # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/rt1/
+padding_side: left
+num_visual_action_tokens: 16384
+static_video_description:
+  - ""
+dataset_type: dataset # or iterable_dataset
+action_before_vision: false
+wo_vision: true
+wo_text: true
+
+# SFT trainer config
+deepspeed: configs/deepspeed/ds_zero3.json
+bf16: false
+fp16: true
+do_eval: true
+eval_strategy: steps
+eval_steps: 2000
+gradient_accumulation_steps: 1
+gradient_checkpointing: true
+gradient_checkpointing_kwargs:
+  use_reentrant: False
+log_level: info
+logging_strategy: steps
+logging_steps: 5  
+lr_scheduler_type: cosine
+max_seq_length: 1024
+max_steps: 80000
+output_dir: /mnt/data-rundong/VLA-experiments/1220-phi1-split-bs16-2node-8v100-woVision-wotext-vq-1210-step50000/
+overwrite_output_dir: true
+per_device_eval_batch_size: 16
+per_device_train_batch_size: 16
+remove_unused_columns: true
+report_to:
+- tensorboard
+save_strategy: steps
+save_steps: 4000
+save_total_limit: 40
+load_best_model_at_end: true
+seed: 42
+warmup_ratio: 0.01
+save_on_each_node: false
+# resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/0812-tokenize0722-step_95000-bridgeRT-VisionFirst-vaFeat-noMask-mistral-piece2of2/checkpoint-24000/
+# resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/1127-split-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000/checkpoint-2000/

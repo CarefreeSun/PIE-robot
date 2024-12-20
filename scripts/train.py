@@ -17,7 +17,7 @@ from src import get_VLA_dataset
 from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
 import os
 
-from llm_backbone import Phi3InVisionActionFeatMask, MistralInVisionActionFeatMask
+from llm_backbone import Phi3InVisionActionFeatMask, MistralInVisionActionFeatMask, PhiInVisionActionFeatMask
 from llm_backbone import Codebook
 
 logger = logging.getLogger(__name__)
@@ -203,6 +203,12 @@ def main():
         # configuration = MistralConfig.from_pretrained(model_args.model_name_or_path)
         model = MistralInVisionActionFeatMask.from_pretrained(llm_checkpoint_path, 
                                                             tokenizer, va_embed, model_args.v_mask_ratio, **model_kwargs)
+    elif model_args.model_type == 'phi1':
+        # configuration = MistralConfig.from_pretrained(model_args.model_name_or_path)
+        model = PhiInVisionActionFeatMask.from_pretrained(llm_checkpoint_path, 
+                                                            tokenizer, va_embed, model_args.v_mask_ratio, **model_kwargs)
+    else:
+        raise NotImplementedError
         
     # Load weights of embed_tokens
     if training_args.resume_from_checkpoint is not None:
