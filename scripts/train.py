@@ -226,17 +226,17 @@ def main():
     # model.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=128) # pad to multiple of 128 to improve performance
     
     # freeze some layers
-    # for name, param in model.named_parameters():
-    #     print(f"Parameter name: {name}, requires_grad: {param.requires_grad}")
-    #     if 'embed_tokens' in name:
-    #         param.requires_grad = False
-    #     elif 'layers' in name:
-    #         name_split = name.split('.')
-    #         layer_id = int(name_split[2])
-    #         if layer_id <= 27:
-    #             param.requires_grad = False
-    # for name, param in model.named_parameters():
-    #     print(f"Parameter name: {name}, requires_grad: {param.requires_grad}")
+    for name, param in model.named_parameters():
+        print(f"Parameter name: {name}, requires_grad: {param.requires_grad}")
+        if 'embed_tokens' in name:
+            param.requires_grad = False
+        elif 'layers' in name:
+            name_split = name.split('.')
+            layer_id = int(name_split[2])
+            if layer_id <= 27:
+                param.requires_grad = False
+    for name, param in model.named_parameters():
+        print(f"Parameter name: {name}, requires_grad: {param.requires_grad}")
     ########################
     # Initialize the Trainer
     ########################
