@@ -6,7 +6,7 @@ import torch
 import transformers
 from transformers import set_seed
 from transformers import TrainerCallback
-from transformers import LlamaTokenizer, CodeGenTokenizer
+from transformers import LlamaTokenizer, CodeGenTokenizer, PreTrainedTokenizerFast
 from collections import OrderedDict
 from safetensors import safe_open
 
@@ -98,6 +98,8 @@ def main():
         # both phi3 and mistral use the LlamaTokenizer
         if model_args.model_type == 'phi1':
             tokenizer = CodeGenTokenizer.from_pretrained(model_args.model_name_or_path)
+        elif model_args.model_type == "llama":
+            tokenizer = PreTrainedTokenizerFast.from_pretrained(model_args.model_name_or_path)
         else:
             tokenizer = LlamaTokenizer.from_pretrained(model_args.model_name_or_path)
     else:
