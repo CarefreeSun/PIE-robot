@@ -1,20 +1,20 @@
 # Model arguments
-model_name_or_path: /mnt/data-rundong/phi-3
+model_name_or_path: /mnt/data-rundong/Llama-3.2-1B-Instruct
 model_revision: main
 torch_dtype: float16
 use_flash_attention_2: false
 disable_auto_config: true
-model_type: phi3
+model_type: llama
 va_ncodes: 16384
 va_embedding_dim: 1024
-va_checkpoint: /mnt/data-rundong/RobotVQ/1210-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim1024-imagenetnorm-imagegan-ganfeatloss02/checkpoints/step_checkpoint-step_20000.ckpt
+va_checkpoint: /mnt/data-rundong/RobotVQ/1210-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim1024-imagenetnorm-imagegan-ganfeatloss02/checkpoints/step_checkpoint-step_50000.ckpt
 v_mask_ratio: 0.0
 
 # Data training arguments
 preprocessing_num_workers: 12
 # data_root: /mnt/data-rundong/robot_datasets/0531-action111-bridge-noMask-woResidual_tokenized_stacked/
 data_roots:
-  - /mnt/data-rundong/robot_datasets/1210-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim1024-imagenetnorm-imagegan-ganfeatloss02_step20000_tokenized_stacked_split/pizza_width/
+  - /mnt/data-rundong/robot_datasets/1210-lr1e-6-8node-8v100-bs4-seqlen3-attn12-7actdec4-drop01-crop-kla-dim1024-imagenetnorm-imagegan-ganfeatloss02_step50000_tokenized_stacked_split/pizza_width/
   # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/bridge2/
   # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/rt1/
 padding_side: left
@@ -43,7 +43,7 @@ logging_steps: 5
 lr_scheduler_type: cosine
 max_seq_length: 1024
 max_steps: 80000
-output_dir: /mnt/data-rundong/VLA-experiments/1217-phi3-split-bs8-4node-8v100-woVision-wotext-vq-1210-step20000/
+output_dir: /mnt/data-rundong/VLA-experiments/1220-llama-split-bs8-4node-8v100-woVision-wotext-vq-1210-step50000/
 overwrite_output_dir: true
 per_device_eval_batch_size: 8
 per_device_train_batch_size: 8
