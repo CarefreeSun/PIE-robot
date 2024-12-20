@@ -6,16 +6,16 @@ Mask some of vision tokens
 
 import torch
 import torch.nn as nn
-from transformers import AutoModelForCausalLM, set_seed, MistralModel, PhiModel
-from transformers import TrainerCallback
+# from transformers import AutoModelForCausalLM, set_seed, MistralModel, PhiModel
+# from transformers import TrainerCallback
 from transformers import Phi3Config, Phi3ForCausalLM, LlamaTokenizer, PhiForCausalLM
 from transformers import MistralConfig, MistralForCausalLM
 from transformers import LlamaForCausalLM
-from transformers import PreTrainedModel
-from .codebook import Codebook
+# from transformers import PreTrainedModel
+# from .codebook import Codebook
 
 class TLAEmbeddingMask(nn.Module):
-    def __init__(self, text_embed: nn.Embedding, tokenizer: LlamaTokenizer, va_embed: Codebook, v_mask_ratio):
+    def __init__(self, text_embed, tokenizer, va_embed, v_mask_ratio):
         super(TLAEmbeddingMask, self).__init__()
 
         self.text_embed = text_embed
