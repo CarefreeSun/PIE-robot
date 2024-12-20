@@ -41,7 +41,7 @@ log_level: info
 logging_strategy: steps
 logging_steps: 5  
 lr_scheduler_type: cosine
-max_seq_length: 1024
+max_seq_length: 2048
 max_steps: 80000
 output_dir: /mnt/data-rundong/VLA-experiments/1220-phi1-split-bs16-2node-8v100-woVision-wotext-vq-1210-step50000/
 overwrite_output_dir: true
