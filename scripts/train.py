@@ -78,7 +78,7 @@ def main():
         print('WORLD_SIZE', os.environ['WORLD_SIZE'])
     except:
         pass
-    
+
     from huggingface_hub import login
     login(token='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')
 
@@ -153,7 +153,7 @@ def main():
     train_dataset = get_VLA_dataset(data_args, tokenizer.eos_token, split='train')
     eval_dataset = get_VLA_dataset(data_args, tokenizer.eos_token, split='test')
 
-    processor = AutoProcessor.from_pretrained(model_args.model_name_or_path, num_crops=1) 
+    processor = AutoProcessor.from_pretrained(model_args.model_name_or_path, num_crops=1, trust_remote_code=True) 
 
     def preprocess_func(example):
         images = []
