@@ -22,6 +22,52 @@ import os
 
 logger = logging.getLogger(__name__)
 
+class DataCollator:
+    def __init__(self, processor):
+        self.processor = processor
+
+    def __call__(self, examples):
+        assert len(examples) == 1, 'Phi-3-V only supports batch_size == 1'
+        example = examples[0]
+        images = example['images']
+        text_dict = example['texts'][0]
+
+        question = text_dict['user']
+        answer = text_dict['assistant']
+        prompt_message = {
+            'role': 'user',
+            'content': f'<|image_1|>\n<|image_2|>\n{question}',
+        }
+
+        prompt = self.processor.tokenizer.apply_chat_template(
+            [prompt_message], tokenize=False, add_generation_prompt=True
+        )
+        answer = f'{answer}<|end|>\n<|endoftext|>'
+
+        # mask questions for labels
+        batch = self.processor(prompt, images, return_tensors='pt')
+        prompt_input_ids = batch['input_ids']
+        # Do not add bos token to answer
+        answer_input_ids = self.processor.tokenizer(
+            answer, add_special_tokens=False, return_tensors='pt'
+        )['input_ids']
+        input_ids = torch.cat([prompt_input_ids, answer_input_ids], dim=1)
+        ignore_index = -100
+        labels = torch.cat(
+            [
+                torch.tensor([ignore_index] * len(prompt_input_ids[0])).unsqueeze(0),
+                answer_input_ids,
+            ],
+            dim=1,
+        )
+
+        batch['input_ids'] = input_ids
+        del batch['attention_mask']
+        batch['labels'] = labels
+
+        return batch
+
+
 def main():
     try:
         print('MASTER_ADDR', os.environ['MASTER_ADDR'])
