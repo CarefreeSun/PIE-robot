@@ -209,7 +209,7 @@ def main():
         # use_flash_attention_2=model_args.use_flash_attention_2,
         _attn_implementation='eager',
         torch_dtype=torch_dtype,
-        # trust_remote_code=True,
+        trust_remote_code=True,
         use_cache=False if training_args.gradient_checkpointing else True
     )
 
