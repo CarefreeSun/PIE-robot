@@ -7,8 +7,11 @@ import transformers
 from transformers import set_seed
 from transformers import TrainerCallback
 from transformers import LlamaTokenizer, AutoModelForCausalLM
-from collections import OrderedDict
-from safetensors import safe_open
+from transformers import AutoProcessor
+
+from PIL import Image
+# from collections import OrderedDict
+# from safetensors import safe_open
 
 sys.path.append('.')
 from src import DataArguments, H4ArgumentParser, ModelArguments, SFTConfig, get_checkpoint, get_datasets
@@ -101,27 +104,33 @@ def main():
     train_dataset = get_VLA_dataset(data_args, tokenizer.eos_token, split='train')
     eval_dataset = get_VLA_dataset(data_args, tokenizer.eos_token, split='test')
 
+    processor = AutoProcessor.from_pretrained(model_args.model_name_or_path, num_crops=1) 
+
     def preprocess_func(example):
-        example_new = {}
-        example_new['text'] = example['input'] + example['output']
-        return example_new
+        images = []
 
-    # # only take a little samples for debug
-    # if training_args.debug:
-    #     print('Debug mode, only take a little samples for training and evaluation')
-    #     train_dataset = train_dataset.select(range(2000))
-    #     eval_dataset = eval_dataset.select(range(100))
+        for i in range(len(example['image_paths'])):
+            images.append(Image.open(example['image_paths'][i]))
 
-    # train_dataset = train_dataset.map(
-    #     preprocess_func,
-    #     num_proc=data_args.preprocessing_num_workers,
-    #     desc="Preprocessing training dataset",
-    # )
-    # eval_dataset = eval_dataset.map(
-    #     preprocess_func,
-    #     num_proc=data_args.preprocessing_num_workers,
-    #     desc="Preprocessing testing dataset",
-    # )
+        inputs = processor(example["text_prompt"], images, return_tensors="pt")
+        return inputs
+
+    # only take a little samples for debug
+    if training_args.debug:
+        print('Debug mode, only take a little samples for training and evaluation')
+        train_dataset = train_dataset.select(range(2000))
+        eval_dataset = eval_dataset.select(range(100))
+
+    train_dataset = train_dataset.map(
+        preprocess_func,
+        num_proc=data_args.preprocessing_num_workers,
+        desc="Preprocessing training dataset",
+    )
+    eval_dataset = eval_dataset.map(
+        preprocess_func,
+        num_proc=data_args.preprocessing_num_workers,
+        desc="Preprocessing testing dataset",
+    )
 
     with training_args.main_process_first(desc="Log a few random samples from the processed training set"):
         # take a sample from the dataset (iteratable)
