@@ -78,6 +78,9 @@ def main():
         print('WORLD_SIZE', os.environ['WORLD_SIZE'])
     except:
         pass
+    
+    from huggingface_hub import login
+    login(token='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')
 
     parser = H4ArgumentParser((ModelArguments, DataArguments, SFTConfig))
     model_args, data_args, training_args = parser.parse()
@@ -127,7 +130,7 @@ def main():
     #     # both phi-3.5-vision-instruct use the LlamaTokenizer
     #     tokenizer = LlamaTokenizer.from_pretrained(model_args.model_name_or_path)
     # else:
-    tokenizer = transformers.AutoTokenizer.from_pretrained(model_args.model_name_or_path)
+    tokenizer = transformers.AutoTokenizer.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
     vocab_size = len(tokenizer)
     # add eos token when when calling tokenizer
     # visual_action_tokens_to_add = ['<va' + str(i) + '>' for i in range(0, data_args.num_visual_action_tokens)]
