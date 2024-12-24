@@ -166,8 +166,8 @@ def main():
 
     # only take a little samples for debug
     print('Debug mode, only take a little samples for training and evaluation')
-    train_dataset = train_dataset.select(range(2000))
-    eval_dataset = eval_dataset.select(range(100))
+    train_dataset = train_dataset.select(range(200))
+    eval_dataset = eval_dataset.select(range(10))
 
     with training_args.main_process_first(desc="Log a few random samples from the processed training set"):
         for i in range(3):
