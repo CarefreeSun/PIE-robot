@@ -84,8 +84,8 @@ def main():
         tokenizer = transformers.AutoTokenizer.from_pretrained(model_args.model_name_or_path)
     vocab_size = len(tokenizer)
     # add eos token when when calling tokenizer
-    visual_action_tokens_to_add = ['<va' + str(i) + '>' for i in range(0, data_args.num_visual_action_tokens)]
-    num_added_visual_action_tokens = tokenizer.add_special_tokens({'additional_special_tokens': visual_action_tokens_to_add})
+    # visual_action_tokens_to_add = ['<va' + str(i) + '>' for i in range(0, data_args.num_visual_action_tokens)]
+    # num_added_visual_action_tokens = tokenizer.add_special_tokens({'additional_special_tokens': visual_action_tokens_to_add})
     special_tokens = ['<bott_i>', '<eott_i>', # task text
                         '<bots_i>', '<eots_i>', # scene text
                         '<botp_i>', '<eotp_i>', # policy text
@@ -116,10 +116,9 @@ def main():
         return inputs
 
     # only take a little samples for debug
-    if training_args.debug:
-        print('Debug mode, only take a little samples for training and evaluation')
-        train_dataset = train_dataset.select(range(2000))
-        eval_dataset = eval_dataset.select(range(100))
+    print('Debug mode, only take a little samples for training and evaluation')
+    train_dataset = train_dataset.select(range(2000))
+    eval_dataset = eval_dataset.select(range(100))
 
     train_dataset = train_dataset.map(
         preprocess_func,
