@@ -169,6 +169,10 @@ def main():
     train_dataset = train_dataset.select(range(2000))
     eval_dataset = eval_dataset.select(range(100))
 
+    with training_args.main_process_first(desc="Log a few random samples from the processed training set"):
+        for i in range(3):
+            logger.info(f"Sample {i}: {train_dataset[i]}")
+
     train_dataset = train_dataset.map(
         preprocess_func,
         num_proc=data_args.preprocessing_num_workers,
