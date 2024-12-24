@@ -123,11 +123,11 @@ def main():
     #               <botp_o>, <eotp_o>, <bov_o>, <eov_o>, <boa_o>, <eoa_o>
     # In total 16384 + vocab_size
     ################
-    if model_args.disable_auto_config:
-        # both phi-3.5-vision-instruct use the LlamaTokenizer
-        tokenizer = LlamaTokenizer.from_pretrained(model_args.model_name_or_path)
-    else:
-        tokenizer = transformers.AutoTokenizer.from_pretrained(model_args.model_name_or_path)
+    # if model_args.disable_auto_config:
+    #     # both phi-3.5-vision-instruct use the LlamaTokenizer
+    #     tokenizer = LlamaTokenizer.from_pretrained(model_args.model_name_or_path)
+    # else:
+    tokenizer = transformers.AutoTokenizer.from_pretrained(model_args.model_name_or_path)
     vocab_size = len(tokenizer)
     # add eos token when when calling tokenizer
     # visual_action_tokens_to_add = ['<va' + str(i) + '>' for i in range(0, data_args.num_visual_action_tokens)]
