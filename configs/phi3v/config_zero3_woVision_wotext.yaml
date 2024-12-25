@@ -45,8 +45,8 @@ max_seq_length: 2048
 max_steps: 80000
 output_dir: /mnt/data-rundong/PIE-Experiments/1224-debug
 overwrite_output_dir: true
-per_device_eval_batch_size: 4
-per_device_train_batch_size: 4
+per_device_eval_batch_size: 1
+per_device_train_batch_size: 1
 remove_unused_columns: false
 report_to:
 - tensorboard
