@@ -129,7 +129,9 @@ for split in ["train", "test"]:
                     stacked_instance["image_paths"] = images
                     dst_file.write(json.dumps(stacked_instance) + '\n')
                 except:
-                    print(f'Error occurs when processing task: {instance_data['ID']}, trajectory: {instance_data['trajectory_id']}, start: {start}')
+                    id = instance_data['ID']
+                    traj = instance_data['trajectory_id']
+                    print(f'Error occurs when processing task: {id}, trajectory: {traj}, start: {start}')
                     continue
 
 
