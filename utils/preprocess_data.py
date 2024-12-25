@@ -71,69 +71,69 @@ for split in ["train", "test"]:
             for start in range(-1, num_start):
                 images = []
                 prompt_output_action = ''
-                try:
-                    if start == -1:
-                        img_start = image_format.format(instance_data['image_indices'][0])
-                        if not os.path.exists(img_start):
-                            continue
-                        images = [img_start] * 2
-                        
-                        pred_action_start_idx = 0 # 预测的action开始的index，注意是image_indices中的顺序而不是实际的frame_id
-                        pred_action_end_idx = pred_action_start_idx + num_pred_actions - 1
-                        if pred_action_end_idx >= num_start:
-                            continue # 不到一个clip的数据，太短没有意义
+                # try:
+                if start == -1:
+                    img_start = image_format.format(instance_data['image_indices'][0])
+                    if not os.path.exists(img_start):
+                        continue
+                    images = [img_start] * 2
+                    
+                    pred_action_start_idx = 0 # 预测的action开始的index，注意是image_indices中的顺序而不是实际的frame_id
+                    pred_action_end_idx = pred_action_start_idx + num_pred_actions - 1
+                    if pred_action_end_idx >= num_start:
+                        continue # 不到一个clip的数据，太短没有意义
 
-                        pred_action_text = ''
+                    pred_action_text = ''
 
-                        for pred_action_idx in range(pred_action_start_idx, pred_action_end_idx + 1):
+                    for pred_action_idx in range(pred_action_start_idx, pred_action_end_idx + 1):
+                        pred_xyzrpy_vec = instance_data['actions'][pred_action_idx][:-1]
+                        pred_gripper = reset_gripper_width(instance_data['action_gripper'][pred_action_idx][-1])
+                        pred_action_text += format_action(pred_xyzrpy_vec, pred_gripper) # e.g. [+000,-005,-001,+050,+002,+007,+788,0]
+                        pred_action_text += ','
+                    
+                    prompt_output_action = prompt_output_format.format(pred_action_text)
+
+                else:
+                    img_start_idx = start
+                    img_end_idx = img_start_idx + num_input_interval
+                    if img_end_idx >= num_start:
+                        continue
+                    img_start = image_format.format(instance_data['image_indices'][img_start_idx])
+                    img_end = image_format.format(instance_data['image_indices'][img_end_idx])
+                    if not os.path.exists(img_start):
+                        continue
+                    if not os.path.exists(img_end):
+                        continue
+                    images = [img_start, img_end]
+
+                    pred_action_start_idx = img_end_idx 
+                    pred_action_end_idx = pred_action_start_idx + num_pred_actions - 1
+
+                    pred_action_text = ''
+
+                    for pred_action_idx in range(pred_action_start_idx, pred_action_end_idx + 1):
+                        if pred_action_idx >= num_start: # 超出边界
+                            pred_xyzrpy_vec = [0. for _ in range(6)]
+                            pred_gripper = 0 # 默认静止，夹爪闭合
+                        else:
                             pred_xyzrpy_vec = instance_data['actions'][pred_action_idx][:-1]
                             pred_gripper = reset_gripper_width(instance_data['action_gripper'][pred_action_idx][-1])
-                            pred_action_text += format_action(pred_xyzrpy_vec, pred_gripper) # e.g. [+000,-005,-001,+050,+002,+007,+788,0]
-                            pred_action_text += ','
+
+                        pred_action_text += format_action(pred_xyzrpy_vec, pred_gripper) # e.g. [+000,-005,-001,+050,+002,+007,0]
+                        pred_action_text += ','
                         
-                        prompt_output_action = prompt_output_format.format(pred_action_text)
+                    prompt_output_action = prompt_output_format.format(pred_action_text)
 
-                    else:
-                        img_start_idx = start
-                        img_end_idx = img_start_idx + num_input_interval
-                        if img_end_idx >= num_start:
-                            continue
-                        img_start = image_format.format(instance_data['image_indices'][img_start_idx])
-                        img_end = image_format.format(instance_data['image_indices'][img_end_idx])
-                        if not os.path.exists(img_start):
-                            continue
-                        if not os.path.exists(img_end):
-                            continue
-                        images = [img_start, img_end]
-
-                        pred_action_start_idx = img_end_idx 
-                        pred_action_end_idx = pred_action_start_idx + num_pred_actions - 1
-
-                        pred_action_text = ''
-
-                        for pred_action_idx in range(pred_action_start_idx, pred_action_end_idx + 1):
-                            if pred_action_idx >= num_start: # 超出边界
-                                pred_xyzrpy_vec = [0. for _ in range(6)]
-                                pred_gripper = 0 # 默认静止，夹爪闭合
-                            else:
-                                pred_xyzrpy_vec = instance_data['actions'][pred_action_idx][:-1]
-                                pred_gripper = reset_gripper_width(instance_data['action_gripper'][pred_action_idx][-1])
-
-                            pred_action_text += format_action(pred_xyzrpy_vec, pred_gripper) # e.g. [+000,-005,-001,+050,+002,+007,0]
-                            pred_action_text += ','
-                            
-                        prompt_output_action = prompt_output_format.format(pred_action_text)
-
-                    stacked_instance = {}
-                    stacked_instance["task_description"] = task_description
-                    stacked_instance["answer"] = prompt_output_action
-                    stacked_instance["image_paths"] = images
-                    dst_file.write(json.dumps(stacked_instance) + '\n')
-                except:
-                    id = instance_data['ID']
-                    traj = instance_data['trajectory_id']
-                    print(f'Error occurs when processing task: {id}, trajectory: {traj}, start: {start}')
-                    continue
+                stacked_instance = {}
+                stacked_instance["task_description"] = task_description
+                stacked_instance["answer"] = prompt_output_action
+                stacked_instance["image_paths"] = images
+                dst_file.write(json.dumps(stacked_instance) + '\n')
+                # except:
+                #     id = instance_data['ID']
+                #     traj = instance_data['trajectory_id']
+                #     print(f'Error occurs when processing task: {id}, trajectory: {traj}, start: {start}')
+                #     continue
 
 
 
