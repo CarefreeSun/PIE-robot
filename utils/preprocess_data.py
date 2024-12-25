@@ -27,17 +27,18 @@ def format_action(values, grip):
     return formatted_str
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--src', type=str, default='robot_datasets/tokenizer-training/pizza_width_split/')
-parser.add_argument('--dst', type=str, default='robot_datasets/tokenizer-training/pizza_preprocessed_for_pie/')
+parser.add_argument('--src', type=str, default='/mnt/data-rundong/robot_datasets/tokenizer-training/pizza_width_split/')
+parser.add_argument('--dst', type=str, default='/mnt/data-rundong/robot_datasets/tokenizer-training/pizza_preprocessed_for_pie/')
 
 args = parser.parse_args()
 
 for split in ["train", "test"]:
     src_path = args.src
-    for i in split:
-        src_filepath = os.path.join(src_path, i, f'{i}.jsonl')
+    for i in range(split):
+        j = split[i]
+        src_filepath = os.path.join(src_path, j, f'{j}.jsonl')
         f = open(src_filepath, 'r')
-        dst_filepath = os.path.join(args.dst, i,  f'{i}.jsonl')
+        dst_filepath = os.path.join(args.dst, j,  f'{j}.jsonl')
         os.makedirs(os.path.dirname(dst_filepath), exist_ok=True)
         dst_file = open(dst_filepath, 'w')
 
