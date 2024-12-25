@@ -8,6 +8,7 @@ from transformers import set_seed
 from transformers import TrainerCallback
 from transformers import LlamaTokenizer, AutoModelForCausalLM
 from transformers import AutoProcessor
+from transformers import Trainer
 
 from PIL import Image
 # from collections import OrderedDict
@@ -17,7 +18,7 @@ sys.path.append('.')
 from src import DataArguments, H4ArgumentParser, ModelArguments, SFTConfig, get_checkpoint, get_datasets
 from src import get_VLA_dataset
 
-from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
+# from trl import SFTTrainer, DataCollatorForCompletionOnlyLM
 import os
 
 logger = logging.getLogger(__name__)
@@ -210,7 +211,7 @@ def main():
             for name, param in model.named_parameters():
                 print(f"Parameter name: {name}, requires_grad: {param.requires_grad}")
 
-    trainer = SFTTrainer(
+    trainer = Trainer(
         model=model,
         args=training_args,
         train_dataset=train_dataset,
@@ -219,9 +220,9 @@ def main():
         # dataset_text_field="text",
         data_collator=data_collator,
         callbacks=[PrintRequiresGradCallback()],
-        max_seq_length=training_args.max_seq_length,
-        dataset_num_proc=data_args.preprocessing_num_workers,
-        dataset_kwargs=training_args.dataset_kwargs,
+        # max_seq_length=training_args.max_seq_length,
+        # dataset_num_proc=data_args.preprocessing_num_workers,
+        # dataset_kwargs=training_args.dataset_kwargs,
     )
 
     ###############
