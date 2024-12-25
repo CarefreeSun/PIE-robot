@@ -98,6 +98,8 @@ def VLA_dataset_generator(shards, eos_token, static_video_description, return_in
                     try:
                         if start == -1:
                             img_start = image_format.format(instance_data['image_indices'][0])
+                            if not os.path.exists(img_start):
+                                continue
                             images = [img_start] * 2
                             
                             pred_action_start_idx = 0 # 预测的action开始的index，注意是image_indices中的顺序而不是实际的frame_id
@@ -122,6 +124,10 @@ def VLA_dataset_generator(shards, eos_token, static_video_description, return_in
                                 continue
                             img_start = image_format.format(instance_data['image_indices'][img_start_idx])
                             img_end = image_format.format(instance_data['image_indices'][img_end_idx])
+                            if not os.path.exists(img_start):
+                                continue
+                            if not os.path.exists(img_end):
+                                continue
                             images = [img_start, img_end]
 
                             pred_action_start_idx = img_end_idx 
@@ -142,8 +148,10 @@ def VLA_dataset_generator(shards, eos_token, static_video_description, return_in
                                 
                             prompt_output_action = prompt_output_format.format(pred_action_text)
 
-                        prompt_output_action += eos_token
-                        yield {"text_prompt": prompt_input + prompt_output_action, "image_paths": images}
+                        # prompt_output_action += eos_token
+                        yield {"prompt": prompt_input, 
+                               "answer": prompt_output_action, 
+                               "image_paths": images}
                     except:
                         continue
                 
