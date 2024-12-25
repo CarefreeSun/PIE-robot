@@ -151,7 +151,7 @@ def VLA_dataset_generator(shards, eos_token, static_video_description, return_in
                         # prompt_output_action += eos_token
                         yield {"prompt": prompt_input, 
                                "answer": prompt_output_action, 
-                               "image_paths": images}
+                               "images": images}
                     except:
                         continue
                 
