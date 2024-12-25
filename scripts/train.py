@@ -29,6 +29,7 @@ class DataCollator:
 
     def __call__(self, examples):
         # assert len(examples) == 1, 'Phi-3-V only supports batch_size == 1'
+        print(f'{examples}')
         example = examples[0]
         images = example['images']
 
