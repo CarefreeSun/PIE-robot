@@ -79,9 +79,6 @@ def main():
     except:
         pass
 
-    # from huggingface_hub import login
-    # login(token='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')
-
     parser = H4ArgumentParser((ModelArguments, DataArguments, SFTConfig))
     model_args, data_args, training_args = parser.parse()
 
