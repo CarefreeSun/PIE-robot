@@ -34,7 +34,7 @@ args = parser.parse_args()
 
 for split in ["train", "test"]:
     src_path = args.src
-    for i in range(split):
+    for i in range(len(split)):
         j = split[i]
         src_filepath = os.path.join(src_path, j, f'{j}.jsonl')
         f = open(src_filepath, 'r')
