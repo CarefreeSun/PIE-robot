@@ -138,7 +138,7 @@ def VLA_dataset_generator(shards, eos_token, static_video_description, return_in
                             for pred_action_idx in range(pred_action_start_idx, pred_action_end_idx + 1):
                                 if pred_action_idx >= num_start: # 超出边界
                                     pred_xyzrpy_vec = [0. for _ in range(6)]
-                                    pred_gripper = 0 # 默认静止，夹爪闭合
+                                    pred_gripper = '0' # 默认静止，夹爪闭合
                                 else:
                                     pred_xyzrpy_vec = instance_data['actions'][pred_action_idx][:-1]
                                     pred_gripper = reset_gripper_width(instance_data['action_gripper'][pred_action_idx][-1])
