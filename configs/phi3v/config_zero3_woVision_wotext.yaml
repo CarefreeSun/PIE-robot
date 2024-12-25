@@ -57,6 +57,5 @@ load_best_model_at_end: true
 seed: 42
 warmup_ratio: 0.01
 save_on_each_node: false
-packing: 
 # resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/1213-phi3-split-bs8-4node-8v100-woVision-wotext-vq-1210-step50000/checkpoint-40000/
 # resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/1127-split-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000/checkpoint-2000/
