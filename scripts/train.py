@@ -31,7 +31,10 @@ class DataCollator:
         # assert len(examples) == 1, 'Phi-3-V only supports batch_size == 1'
         print(f'{examples}')
         example = examples[0]
-        images = example['images']
+        images = []
+        for i in range(len(example['image_paths'])):
+            images.append(Image.open(example['image_paths'][i]))
+
 
         question = example['prompt']
         answer = example['answer']
