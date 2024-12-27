@@ -22,8 +22,8 @@ wo_text: true
 
 # SFT trainer config
 deepspeed: configs/deepspeed/ds_zero3_bf16.json
-bf16: false
-fp16: true
+bf16: true
+fp16: false
 do_eval: true
 eval_strategy: steps
 eval_steps: 2000
