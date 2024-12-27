@@ -206,12 +206,8 @@ def main():
         train_dataset=train_dataset,
         eval_dataset=eval_dataset,
         tokenizer=tokenizer,
-        # dataset_text_field="text",
         data_collator=data_collator,
         callbacks=[PrintRequiresGradCallback()],
-        # max_seq_length=training_args.max_seq_length,
-        # dataset_num_proc=data_args.preprocessing_num_workers,
-        # dataset_kwargs=training_args.dataset_kwargs,
     )
 
     ###############
@@ -258,46 +254,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
-
-    # def preprocess_func(example):
-    #     images = []
-
-    #     for i in range(len(example['image_paths'])):
-    #         images.append(Image.open(example['image_paths'][i]))
-
-    #     inputs = processor(example["text_prompt"], images, return_tensors="pt")
-    #     return inputs
-
-    # # only take a little samples for debug
-    # print('Debug mode, only take a little samples for training and evaluation')
-    # train_dataset = train_dataset.select(range(200))
-    # eval_dataset = eval_dataset.select(range(10))
-
-    # with training_args.main_process_first(desc="Log a few random samples from the processed training set"):
-    #     for i in range(3):
-    #         logger.info(f"Sample {i}: {train_dataset[i]}")
-
-    # train_dataset = train_dataset.map(
-    #     preprocess_func,
-    #     num_proc=data_args.preprocessing_num_workers,
-    #     desc="Preprocessing training dataset",
-    # )
-    # eval_dataset = eval_dataset.map(
-    #     preprocess_func,
-    #     num_proc=data_args.preprocessing_num_workers,
-    #     desc="Preprocessing testing dataset",
-    # )
-
-    # with training_args.main_process_first(desc="Log a few random samples from the processed training set"):
-    #     # take a sample from the dataset (iteratable)
-    #     if type(train_dataset) == datasets.IterableDataset:
-    #         for i, example in enumerate(train_dataset.take(3)):
-    #             logger.info(f"Sample {i}: {example['text']}")
-    #     else:
-    #         for i in range(3):
-    #             logger.info(f"Sample {i}: {train_dataset[i]}")
-    
-    # response_template_id = tokenizer.convert_tokens_to_ids(['<eott_i>'])
-
-    # data_collator = DataCollatorForCompletionOnlyLM(response_template_id, tokenizer=tokenizer)
