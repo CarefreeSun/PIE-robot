@@ -195,17 +195,10 @@ class ModelArguments:
     )
     use_bnb_nested_quant: bool = field(default=False, metadata={"help": "use nested quantization"})
     disable_auto_config: bool = field(default=False, metadata={"help": "Disable auto config."})
-    model_type: Optional[str] = field(default="mistral", 
-        metadata={"help": "The model type.", "choices": ["mistral", "phi3"],
+    model_type: Optional[str] = field(default="phi3v", 
+        metadata={"help": "The model type."
         })
 
-    va_ncodes: int = field(default=16384, metadata={"help": "Code numbers for vision action codebook"})
-    va_embedding_dim: int = field(default=256, metadata={"help": "Embedding dimension for vision action codebook"})
-    va_checkpoint: str = field(
-        default="/mnt/data-rundong/VQ3D-vision-action/0531-action111-bridge-noMask-woResidual/checkpoints/step_checkpoint-step_30000.ckpt",
-        metadata={"help": "The path of pretrained vision action VQ model."},
-    )
-    v_mask_ratio: int = field(default=0.0, metadata={"help": "Mask ratio for vision tokens input to LLM"})
     
     def __post_init__(self):
         if self.load_in_8bit and self.load_in_4bit:

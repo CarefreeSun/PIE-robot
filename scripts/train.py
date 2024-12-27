@@ -121,21 +121,10 @@ def main():
 
     ################
     # Load tokenizer
-    # The visual modality has 2048 (16384) tokens, and the action modality has 256 tokens, add them to the tokenizer
-    # Add special tokens for the visual and action modalities, 
-    #     including <bots_i>, <eots_i>, <botp_i>, <eotp_i>, <bov_i>, <eov_i>, <boa_i>, <eoa_i>,
-    #               <botp_o>, <eotp_o>, <bov_o>, <eov_o>, <boa_o>, <eoa_o>
-    # In total 16384 + vocab_size
     ################
-    # if model_args.disable_auto_config:
-    #     # both phi-3.5-vision-instruct use the LlamaTokenizer
-    #     tokenizer = LlamaTokenizer.from_pretrained(model_args.model_name_or_path)
-    # else:
     tokenizer = transformers.AutoTokenizer.from_pretrained(model_args.model_name_or_path, trust_remote_code=True)
     vocab_size = len(tokenizer)
     # add eos token when when calling tokenizer
-    # visual_action_tokens_to_add = ['<va' + str(i) + '>' for i in range(0, data_args.num_visual_action_tokens)]
-    # num_added_visual_action_tokens = tokenizer.add_special_tokens({'additional_special_tokens': visual_action_tokens_to_add})
     special_tokens = ['<bott_i>', '<eott_i>', # task text
                         '<bots_i>', '<eots_i>', # scene text
                         '<botp_i>', '<eotp_i>', # policy text

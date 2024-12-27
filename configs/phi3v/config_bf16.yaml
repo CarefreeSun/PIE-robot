@@ -1,7 +1,7 @@
 # Model arguments
 model_name_or_path: /mnt/data-rundong/Phi-3.5-vision-instruct
 model_revision: main
-torch_dtype: float16
+torch_dtype: bfloat16
 use_flash_attention_2: false
 disable_auto_config: true
 model_type: phi3v
@@ -10,9 +10,7 @@ model_type: phi3v
 preprocessing_num_workers: 12
 # data_root: /mnt/data-rundong/robot_datasets/0531-action111-bridge-noMask-woResidual_tokenized_stacked/
 data_roots:
-  - /mnt/data-rundong/robot_datasets/tokenizer-training/pizza_width_split/
-  # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/bridge2/
-  # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/rt1/
+  - /mnt/data-rundong/robot_datasets/tokenizer-training/pizza_preprocessed_for_pie/
 padding_side: right
 num_visual_action_tokens: 16384
 static_video_description:
@@ -23,7 +21,7 @@ wo_vision: true
 wo_text: true
 
 # SFT trainer config
-deepspeed: configs/deepspeed/ds_zero3.json
+deepspeed: configs/deepspeed/ds_zero3_bf16.json
 bf16: false
 fp16: true
 do_eval: true
@@ -35,11 +33,11 @@ gradient_checkpointing_kwargs:
   use_reentrant: False
 log_level: info
 logging_strategy: steps
-logging_steps: 5  
+logging_steps: 20  
 lr_scheduler_type: cosine
 max_seq_length: 2048
-max_steps: 80000
-output_dir: /mnt/data-rundong/PIE-Experiments/1227-phi3v-bs1-4node-8v100
+max_steps: 200000
+output_dir: /mnt/data-rundong/PIE-Experiments/1227-phi3v-bs1-4node-8a100
 overwrite_output_dir: true
 per_device_eval_batch_size: 1
 per_device_train_batch_size: 1
@@ -53,5 +51,3 @@ load_best_model_at_end: true
 seed: 42
 warmup_ratio: 0.01
 save_on_each_node: false
-# resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/1213-phi3-split-bs8-4node-8v100-woVision-wotext-vq-1210-step50000/checkpoint-40000/
-# resume_from_checkpoint: /mnt/data-rundong/VLA-experiments/1127-split-bs4-8node-8v100-woVision-wotext-vq-1122-kl-step30000/checkpoint-2000/
