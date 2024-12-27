@@ -10,7 +10,7 @@ model_type: phi3v
 preprocessing_num_workers: 12
 # data_root: /mnt/data-rundong/robot_datasets/0531-action111-bridge-noMask-woResidual_tokenized_stacked/
 data_roots:
-  - /mnt/data-rundong/robot_datasets/tokenizer-training/pizza_width_split/
+  - /mnt/data-rundong/robot_datasets/tokenizer-training/pizza_preprocessed_for_pie/
   # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/bridge2/
   # - /mnt/data-rundong/robot_datasets/0725-dinov2-action111-bridgeRT-noMask-woResidual-usePixelWeight-continueTrain0722_step95000_tokenized_stacked/rt1/
 padding_side: right
