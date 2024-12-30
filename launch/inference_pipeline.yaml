@@ -44,5 +44,5 @@ jobs:
       container_args:
         shm_size: 2048g
     command:
-      - cd PIE-robot/inference
-      - python pipeline.py
+      - cd PIE-robot
+      - python inference/pipeline.py configs/inference/phi3v.yaml
