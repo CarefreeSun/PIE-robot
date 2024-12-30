@@ -7,7 +7,7 @@ from PIL import Image
 
 import os
 import argparse
-from src.configs import H4ArgumentParser, DataArguments, ModelArguments
+from configs import H4ArgumentParser, DataArguments, ModelArguments
 from transformers import AutoProcessor, AutoModelForCausalLM, AutoTokenizer
 
 import os
