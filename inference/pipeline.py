@@ -18,12 +18,6 @@ from transformers import AutoProcessor, AutoModelForCausalLM, AutoTokenizer
 import os
 import json
 
-def generate_img_paths():
-    image_paths = []
-    image_path_format = './test_images/outputimage_0_{}_0.png'
-    for i in range(6):
-        image_paths.append(image_path_format.format(i))
-    return image_paths
 
 def decode_action(action_str: str):
     """
@@ -166,14 +160,12 @@ def main():
     # 1. encode the images and actions
     # the src_filepath should contain the following fields
     # task_description, image_paths
+    # an example
+    data_args.src_filepath = "/mnt/data-rundong/robot_datasets/tokenizer-training/pizza_preprocessed_for_pie/test/test.jsonl"
     with open(data_args.src_filepath, 'r') as f:
         lines = f.readlines()
-        assert len(lines) == 1
         line = lines[0]
-
         instance_data = json.loads(line)
-
-    instance_data['image_paths'] = generate_img_paths()
 
     # call the models, override original actions and clip description with the predicted ones
     instance_data = call_models(instance_data, processor, tokenizer, model_vla, data_args, device)
