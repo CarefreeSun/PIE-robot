@@ -118,30 +118,16 @@ def main():
     # 0. define the tokenizer, processor and vla model
     # tokenizer
     tokenizer = AutoTokenizer.from_pretrained(vla_args.model_name_or_path, trust_remote_code=True)
-    vocab_size = len(tokenizer)
-    # add eos token when when calling tokenizer
-    visual_action_tokens_to_add = ['<va' + str(i) + '>' for i in range(0, data_args.num_visual_action_tokens)]
-    num_added_visual_action_tokens = tokenizer.add_special_tokens({'additional_special_tokens': visual_action_tokens_to_add})
-    special_tokens = ['<bott_i>', '<eott_i>', # task text
-                        '<bots_i>', '<eots_i>', # scene text
-                        '<botp_i>', '<eotp_i>', # policy text
-                        '<bov_i>', '<eov_i>', '<boa_i>', '<eoa_i>', # vision and action tokens
-                        '<botp_o>', '<eotp_o>', # output policy text
-                        '<bov_o>', '<eov_o>', '<boa_o>', '<eoa_o>'] # output vision and action tokens
-    num_added_special_tokens = tokenizer.add_special_tokens({'additional_special_tokens': special_tokens})
-    tokenizer.add_special_tokens({'pad_token': '[PAD]'})
     # For SFT training, padding should be on the right (if overflow occurs)
     tokenizer.padding_side = 'right'
 
     # processor
-    processor = AutoProcessor.from_pretrained(vla_args.model_name_or_path, num_crops=1, trust_remote_code=True)
+    processor = AutoProcessor.from_pretrained(vla_args.processor_name_or_path, num_crops=1, trust_remote_code=True)
     
     # use float16 (V100 does not support bfloat16)
     torch_dtype = torch.float16
 
     model_kwargs = dict(
-        # revision=model_args.model_revision,
-        # use_flash_attention_2=model_args.use_flash_attention_2,
         _attn_implementation='eager',
         torch_dtype=torch_dtype,
         trust_remote_code=True,
@@ -149,8 +135,7 @@ def main():
     )
 
     # Initialize LLM
-    llm_checkpoint_path = vla_args.model_name_or_path
-    model_vla = AutoModelForCausalLM.from_pretrained(llm_checkpoint_path, **model_kwargs)
+    model_vla = AutoModelForCausalLM.from_pretrained(vla_args.model_name_or_path, **model_kwargs)
 
     # 1. encode the images and actions
     # the src_filepath should contain the following fields

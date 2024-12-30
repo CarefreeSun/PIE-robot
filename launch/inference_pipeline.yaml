@@ -1,0 +1,48 @@
+description: inference pipeline debug 
+env_defaults:
+  NODES: 1
+  GPUS: 8
+  MEM: 32
+
+target:
+  service: aml
+  name: robotvla
+
+storage:
+  my_output:
+    storage_account_name: azsussc
+    container_name: v-rundongluo
+    mount_dir: /mnt/data-rundong
+  data:
+    storage_account_name: azsussc
+    container_name: v-wenhuitan
+    mount_dir: /mnt/robotdata
+    is_output: false
+
+environment:
+  image: base/job/pytorch/acpt-2.1.2-cuda11.8:20240320T154353549
+  setup:
+    - pip install torch==2.1.2 torchvision==0.16.2 torchaudio==2.1.2 --index-url https://download.pytorch.org/whl/cu118
+    - git clone https://github.com/CarefreeSun/PIE-robot.git && cd PIE-robot
+    - pip install -r requirements.txt
+  registry: singularitybase.azurecr.io
+
+code:
+  local_dir: $CONFIG_DIR/
+
+data:
+  storage_id: my_output
+
+jobs:
+  - name: 1230-pipeline-debug
+    sku: ${NODES}x${MEM}G${GPUS}-V100 #G1-V100
+    process_count_per_node: 1 # ${GPUS}
+    execution_mode: Basic
+    submit_args:
+      env:
+        AMLT_DOCKERFILE_TEMPLATE: default
+      container_args:
+        shm_size: 2048g
+    command:
+      - cd PIE-robot/inference
+      - python pipeline.py

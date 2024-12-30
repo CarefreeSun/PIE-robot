@@ -1,0 +1,6 @@
+# VLA Model arguments
+model_name_or_path: /mnt/data-rundong/PIE-Experiments/1227-phi3v-bs1-4node-8a100/checkpoint-112000/
+processor_name_or_path: /mnt/data-rundong/Phi-3.5-vision-instruct/
+
+# Data training arguments
+src_filepath: /mnt/data-rundong/robot_datasets/tokenizer-training/pizza_preprocessed_for_pie/test/test.jsonl

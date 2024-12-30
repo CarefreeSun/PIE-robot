@@ -198,6 +198,14 @@ class ModelArguments:
     model_type: Optional[str] = field(default="phi3v", 
         metadata={"help": "The model type."
         })
+    processor_name_or_path: Optional[str] = field(
+        default=None,
+        metadata={
+            "help": (
+                "The path to the processor. Useful if you want to use a different processor to the one stored in `model_name_or_path`."
+            )
+        },
+    )
 
     
     def __post_init__(self):
