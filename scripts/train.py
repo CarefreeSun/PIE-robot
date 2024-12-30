@@ -183,7 +183,7 @@ def main():
     else:
         raise NotImplementedError
             
-    model.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=128) # pad to multiple of 128 to improve performance
+    # model.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=128) # pad to multiple of 128 to improve performance
     
     ########################
     # Initialize the Trainer
