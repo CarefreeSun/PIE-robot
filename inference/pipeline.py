@@ -135,7 +135,7 @@ def main():
     )
 
     # Initialize LLM
-    model_vla = AutoModelForCausalLM.from_pretrained(vla_args.model_name_or_path, **model_kwargs)
+    model_vla = AutoModelForCausalLM.from_pretrained(vla_args.model_name_or_path, **model_kwargs).eval().to(device)
 
     # 1. encode the images and actions
     # the src_filepath should contain the following fields
