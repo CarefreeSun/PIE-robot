@@ -69,7 +69,7 @@ def preprocess_data(instance_data: dict, processor: AutoProcessor):
     
 
 @torch.no_grad()
-def call_vla(instance_data: dict, processor: AutoProcessor, tokenizer: AutoTokenizer, vla_pipe: AutoModelForCausalLM, data_args: DataArguments, device):
+def call_vla(instance_data: dict, processor: AutoProcessor, tokenizer: AutoTokenizer, vla_pipe: AutoModelForCausalLM, device):
 
     input_data = preprocess_data(instance_data, processor).to(device)
 
@@ -89,9 +89,9 @@ def call_vla(instance_data: dict, processor: AutoProcessor, tokenizer: AutoToken
     return output_action_pred, output_clip_description_pred
 
 
-def call_models(instance_data: dict, processor: AutoProcessor, tokenizer: AutoTokenizer, vla_pipe: AutoModelForCausalLM, data_args: DataArguments, device):
+def call_models(instance_data: dict, processor: AutoProcessor, tokenizer: AutoTokenizer, vla_pipe: AutoModelForCausalLM, device):
 
-    output_action_pred, output_clip_description_pred = call_vla(instance_data, processor, tokenizer, vla_pipe, data_args, device)
+    output_action_pred, output_clip_description_pred = call_vla(instance_data, processor, tokenizer, vla_pipe, device)
 
     instance_data['clip_description'] = output_clip_description_pred
     instance_data['actions'] = output_action_pred
