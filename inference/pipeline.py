@@ -152,7 +152,7 @@ def main():
         instance_data = json.loads(line)
 
     # call the models, override original actions and clip description with the predicted ones
-    instance_data = call_models(instance_data, processor, tokenizer, model_vla, data_args, device)
+    instance_data = call_models(instance_data, processor, tokenizer, model_vla, device)
 
     print(instance_data['clip_description'])
     print(instance_data['actions'])
