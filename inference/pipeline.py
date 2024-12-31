@@ -128,6 +128,7 @@ def main():
     torch_dtype = torch.float16
 
     model_kwargs = dict(
+        ignore_mismatched_sizes=True, # brutal force
         _attn_implementation='eager',
         torch_dtype=torch_dtype,
         trust_remote_code=True,
