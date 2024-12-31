@@ -136,7 +136,7 @@ def main():
 
     # Initialize LLM
     model_vla = AutoModelForCausalLM.from_pretrained(vla_args.model_name_or_path, **model_kwargs)
-    model_vla.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=128) # pad to multiple of 128 to improve performance
+    # model_vla.resize_token_embeddings(len(tokenizer), pad_to_multiple_of=128) # pad to multiple of 128 to improve performance
     model_vla = model_vla.eval().to(device)
 
 
