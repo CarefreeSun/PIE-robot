@@ -82,6 +82,7 @@ def call_vla(instance_data: dict, processor: AutoProcessor, tokenizer: AutoToken
     generate_ids = vla_pipe.generate(**input_data, eos_token_id=processor.tokenizer.eos_token_id, **generation_args)
     # remove input tokens 
     generate_ids = generate_ids[:, input_data['input_ids'].shape[1]:]
+    print(generate_ids)
     output_text = tokenizer.batch_decode(generate_ids, skip_special_tokens=False, clean_up_tokenization_spaces=False)[0]
 
     print(output_text)
