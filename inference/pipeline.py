@@ -35,8 +35,9 @@ def decode_action(action_str: str):
             for sublist in sublists:
                 # remove "[" and "]", and split values by ","
                 elements = sublist.strip("[]").split(",")
+
                 # transform action values
-                result.append([int(e) / 10000 for e in elements])
+                result.append([int(e) / 10000 for e in elements[:-1]].append(int(elements[-1])))
             return result
         except:
             raise ValueError(f"Wrong action format in prediction: {action_str}")
